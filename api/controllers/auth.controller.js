@@ -78,7 +78,7 @@ module.exports.signup = async (req, res) => {
       newUser.username
     }, please click on the following link to verify your account: <a href="${
       config.FRONTEND_URI
-    }/verifyAccount/${result.value.verificationToken}"></a></p>`,
+    }/verifyAccount/${result.value.verificationToken}">Verify</a></p>`,
   });
   res.status(201).json({
     err: null,
@@ -212,7 +212,7 @@ module.exports.forgotPassword = async (req, res) => {
       config.FRONTEND_URI
     }/resetPassword/${
       user.resetPasswordToken
-    }"></a><br> If you did not make the request, then ignore this email, your account will be safe.</p>`,
+    }">Reset</a><br> If you did not make the request, then ignore this email, your account will be safe.</p>`,
   });
   res.status(200).json({
     err: null,
