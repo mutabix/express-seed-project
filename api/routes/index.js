@@ -41,6 +41,13 @@ const isNotAuthenticated = (req, res, next) => {
   }
 };
 
+const upload = folder => (req, res, next) =>
+  multer(`${req.decodedToken.user.username}/${folder}`).single('file')(
+    req,
+    res,
+    next,
+  );
+
 // -------------------------------Auth------------------------------------------
 router.post('/auth/signup', isNotAuthenticated, errorHandler(authCtrl.signup));
 router.post('/auth/login', isNotAuthenticated, errorHandler(authCtrl.login));
