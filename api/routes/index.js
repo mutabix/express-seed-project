@@ -35,10 +35,15 @@ const isNotAuthenticated = (req, res, next) => {
   if (!token) {
     next();
   } else {
-    res.status(403).json({
-      error: null,
-      msg: 'You are already logged in.',
-      data: null,
+    jwt.verify(token, req.app.get('secret'), (err, decodedToken) => {
+      if (!err) {
+        return res.status(401).json({
+          error: err,
+          msg: 'You are already logged in.',
+          data: null,
+        });
+      }
+      next();
     });
   }
 };
