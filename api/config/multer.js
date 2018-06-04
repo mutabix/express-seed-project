@@ -4,7 +4,7 @@ const fs = require('fs-extra');
 const randToken = require('rand-token');
 const config = require('./index');
 
-module.exports = folder =>
+module.exports = (folder, allowedTypes) =>
   multer({
     storage: multer.diskStorage({
       destination(req, file, callback) {
@@ -21,6 +21,6 @@ module.exports = folder =>
     }),
     fileFilter(req, file, callback) {
       const typeArray = file.mimetype.split('/');
-      callback(null, typeArray[0] === 'video' || typeArray[0] === 'image');
+      callback(null, allowedTypes.includes(typeArray[0]));
     },
   });

@@ -1,8 +1,10 @@
 const express = require('express');
 const errorHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
+const multer = require('../config/multer');
 const authCtrl = require('../controllers/auth.controller');
 const fileCtrl = require('../controllers/file.controller');
+const userCtrl = require('../controllers/user.controller');
 
 const router = express.Router();
 
@@ -41,12 +43,10 @@ const isNotAuthenticated = (req, res, next) => {
   }
 };
 
-const upload = folder => (req, res, next) =>
-  multer(`${req.decodedToken.user.username}/${folder}`).single('file')(
-    req,
-    res,
-    next,
-  );
+const upload = (folder, allowedTypes) => (req, res, next) =>
+  multer(`${req.decodedToken.user.username}/${folder}`, allowedTypes).single(
+    'file',
+  )(req, res, next);
 
 // -------------------------------Auth------------------------------------------
 router.post('/auth/signup', isNotAuthenticated, errorHandler(authCtrl.signup));
@@ -74,6 +74,19 @@ router.patch(
   '/auth/changePassword',
   isAuthenticated,
   errorHandler(authCtrl.changePassword),
+);
+
+// ----------------------------------User-------------------------------------
+router.patch(
+  '/user/updateProfile',
+  isAuthenticated,
+  errorHandler(userCtrl.updateProfile),
+);
+router.patch(
+  '/user/changeProfilePicture',
+  isAuthenticated,
+  upload('profilePictures', ['image']),
+  errorHandler(userCtrl.changeProfilePicture),
 );
 
 // -----------------------------------File-------------------------------------

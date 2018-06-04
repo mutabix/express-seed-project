@@ -1,6 +1,16 @@
 const mongoose = require('mongoose');
 
 const userSchema = mongoose.Schema({
+  firstName: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  lastName: {
+    type: String,
+    required: true,
+    trim: true,
+  },
   username: {
     type: String,
     required: true,
@@ -20,7 +30,10 @@ const userSchema = mongoose.Schema({
     required: true,
     trim: true,
   },
-  profilePicture: String,
+  profilePicture: {
+    url: String,
+    path: String,
+  },
   resetPasswordToken: String,
   resetPasswordTokenExpiry: Date,
   verificationToken: String,

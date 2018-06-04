@@ -13,6 +13,14 @@ const User = mongoose.model('User');
 module.exports.signup = async (req, res) => {
   const schema = joi
     .object({
+      firstName: joi
+        .string()
+        .trim()
+        .required(),
+      lastName: joi
+        .string()
+        .trim()
+        .required(),
       username: joi
         .string()
         .trim()
@@ -32,7 +40,6 @@ module.exports.signup = async (req, res) => {
         .trim()
         .min(8)
         .required(),
-      profilePicture: joi.string().trim(),
     })
     .options({
       stripUnknown: true,
