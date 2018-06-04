@@ -59,7 +59,7 @@ module.exports.updateProfile = async (req, res) => {
       });
     }
   }
-  const updatedUser = await User.findByIdAndUpdate(
+  let updatedUser = await User.findByIdAndUpdate(
     req.decodedToken.user._id,
     {
       $set: result.value,
@@ -67,9 +67,7 @@ module.exports.updateProfile = async (req, res) => {
     {
       new: true,
     },
-  )
-    .lean()
-    .exec();
+  ).exec();
   if (!updatedUser) {
     return res.status(404).json({
       err: null,
@@ -77,10 +75,13 @@ module.exports.updateProfile = async (req, res) => {
       data: null,
     });
   }
+  updatedUser = updatedUser.toObject();
+  delete updatedUser.createdAt;
+  delete updatedUser.updatedAt;
   res.status(200).json({
     err: null,
     msg: 'Profile was updated successfully.',
-    data: updatedUser.toObject(),
+    data: updatedUser,
   });
 };
 
