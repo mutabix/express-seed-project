@@ -98,7 +98,7 @@ router.patch(
 router.get(
   '/file/:parentFolder/:subFolder/:fileName',
   isAuthenticated,
-  fileCtrl.getFile,
+  errorHandler(fileCtrl.getFile),
 );
 
 module.exports = router;
