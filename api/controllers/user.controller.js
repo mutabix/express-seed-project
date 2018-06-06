@@ -59,7 +59,7 @@ module.exports.updateProfile = async (req, res) => {
       });
     }
   }
-  let updatedUser = await User.findByIdAndUpdate(
+  const updatedUser = await User.findByIdAndUpdate(
     req.decodedToken.user._id,
     {
       $set: result.value,
@@ -77,11 +77,10 @@ module.exports.updateProfile = async (req, res) => {
       data: null,
     });
   }
-  updatedUser = updatedUser.toObject();
   res.status(200).json({
     err: null,
     msg: 'Profile was updated successfully.',
-    data: updatedUser,
+    data: updatedUser.toObject(),
   });
 };
 
