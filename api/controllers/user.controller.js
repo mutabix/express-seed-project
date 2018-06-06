@@ -67,7 +67,9 @@ module.exports.updateProfile = async (req, res) => {
     {
       new: true,
     },
-  ).exec();
+  )
+    .select('-createdAt -updatedAt')
+    .exec();
   if (!updatedUser) {
     return res.status(404).json({
       err: null,
@@ -76,8 +78,6 @@ module.exports.updateProfile = async (req, res) => {
     });
   }
   updatedUser = updatedUser.toObject();
-  delete updatedUser.createdAt;
-  delete updatedUser.updatedAt;
   res.status(200).json({
     err: null,
     msg: 'Profile was updated successfully.',
