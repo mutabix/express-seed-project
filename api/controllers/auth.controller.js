@@ -40,6 +40,11 @@ module.exports.signup = async (req, res) => {
         .trim()
         .min(8)
         .required(),
+      confirmPassword: joi
+        .string()
+        .trim()
+        .equal(req.body.password)
+        .required(),
     })
     .options({
       stripUnknown: true,
