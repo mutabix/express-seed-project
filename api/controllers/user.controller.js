@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const joi = require('joi');
 const fs = require('fs-extra');
+const moment = require('moment');
 const path = require('path');
 const config = require('../config');
 
@@ -59,6 +60,7 @@ module.exports.updateProfile = async (req, res) => {
       });
     }
   }
+  result.value.updatedAt = moment().toDate();
   const updatedUser = await User.findByIdAndUpdate(
     req.decodedToken.user._id,
     {
