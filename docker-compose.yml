@@ -16,6 +16,19 @@ services:
           memory: 50M
     networks:
       - webnet
+    depends_on:
+      - mongo
 
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - /data/db:/data/db
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    networks:
+      - webnet
 networks:
   webnet:
