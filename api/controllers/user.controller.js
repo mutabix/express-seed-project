@@ -95,15 +95,16 @@ module.exports.changeProfilePicture = async (req, res) => {
       data: null,
     });
   }
-  const url = `${req.protocol}://${req.hostname}:${req.app.get('port')}/${
-    config.MEDIA_FOLDER
-  }/${req.decodedToken.user.username}/profilePictures/${req.file.filename}`;
+  const imagePath = `${config.MEDIA_FOLDER}/${
+    req.decodedToken.user.username
+  }/profilePictures/${req.file.filename}`;
+  const url = `${req.protocol}://${req.hostname}:${req.app.get(
+    'port',
+  )}/${imagePath}`;
   const user = await User.findByIdAndUpdate(req.decodedToken.user._id, {
     $set: {
       profilePicture: {
-        path: `${config.MEDIA_FOLDER}/${
-          req.decodedToken.user.username
-        }/profilePictures/${req.file.filename}`,
+        path: imagePath,
         url,
       },
     },
@@ -115,10 +116,16 @@ module.exports.changeProfilePicture = async (req, res) => {
       .status(404)
       .json({ err: null, msg: 'Account not found.', data: null });
   }
-  await fs.remove(path.resolve('./', user.profilePicture.path));
+
+  if (user.profilePicture) {
+    await fs.remove(path.resolve('./', user.profilePicture.path));
+  }
   res.status(200).json({
     err: null,
     msg: 'Profile Picture was changed successfully.',
-    data: url,
+    data: {
+      url,
+      path: imagePath,
+    },
   });
 };
