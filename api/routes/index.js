@@ -57,6 +57,10 @@ const upload = (folder, allowedTypes) => (req, res, next) =>
 router.post('/auth/signup', isNotAuthenticated, errorHandler(authCtrl.signup));
 router.post('/auth/login', isNotAuthenticated, errorHandler(authCtrl.login));
 router.patch(
+  '/auth/resendVerificationEmail',
+  errorHandler(authCtrl.resendVerificationEmail),
+);
+router.patch(
   '/auth/verifyAccount/:verificationToken',
   errorHandler(authCtrl.verifyAccount),
 );
