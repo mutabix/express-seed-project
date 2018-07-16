@@ -178,7 +178,6 @@ module.exports.resendVerificationEmail = async (req, res) => {
   const user = await User.findOne({
     email: result.value.email,
   })
-    .lean()
     .exec();
   if (!user) {
     return res.status(404).json({
