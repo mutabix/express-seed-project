@@ -177,8 +177,7 @@ module.exports.resendVerificationEmail = async (req, res) => {
   }
   const user = await User.findOne({
     email: result.value.email,
-  })
-    .exec();
+  }).exec();
   if (!user) {
     return res.status(404).json({
       err: null,
@@ -191,6 +190,8 @@ module.exports.resendVerificationEmail = async (req, res) => {
   result.value.verificationTokenExpiry = moment()
     .add(24, 'hours')
     .toDate();
+  user.verificationToken = result.value.verificationToken;
+  user.verificationTokenExpiry = result.value.verificationTokenExpiry;
   await user.save();
   await nodemailer.sendMail({
     from: config.MAILER.from,
