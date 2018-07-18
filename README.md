@@ -34,8 +34,4 @@ An ES6/ES7 Express.js RESTful API starter project following best practices and A
       1.  `docker swarm init`
       2.  `docker stack deploy -c docker-compose.yml express-seed-project`
 
-## Notes For Successfull Running
-
-You have to plug in your own configuration (API Keys, Secret Keys and etc) in `api/config/index.js`.
-
 &#9400; Omar Doma 2018
