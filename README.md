@@ -10,6 +10,12 @@ An ES6/ES7 Express.js RESTful API starter project following best practices and A
 - MongoDB v3.6
 - Docker
 
+## Notes For Successfull Running
+
+- You have to plug in your own configuration (API Keys, Secret Keys and etc) in `api/config/index.js`.
+- Mailer's API Key and Domain are based on Mailgun, so signup for a free account and add its credentials.
+- Mailgun's free account sandbox domain have a limitation that you can only send emails to authorized recepients that you added, so add a couple of emails there for testing and for the functions to work.
+
 ## How to run manually?
 
 1.  Clone the repo
