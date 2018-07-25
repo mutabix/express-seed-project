@@ -18,7 +18,6 @@ app.use(logger(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 app.use(
   cors({
     origin: true,
-    credentials: true,
     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
   }),
 );
@@ -30,10 +29,12 @@ app.use(
     extended: false,
   }),
 );
-app.use(
-  `/${config.MEDIA_FOLDER}`,
-  express.static(path.join(__dirname, `${config.MEDIA_FOLDER}`)),
-);
+if (process.env.NODE_ENV !== 'production') {
+  app.use(
+    `/${config.MEDIA_FOLDER}`,
+    express.static(path.join(__dirname, config.MEDIA_FOLDER)),
+  );
+}
 app.use('/api', routes);
 
 // 500 internal server error handler
