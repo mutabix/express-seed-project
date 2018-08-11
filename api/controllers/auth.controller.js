@@ -70,7 +70,7 @@ module.exports.signup = async (req, res) => {
     .lean()
     .exec();
   if (user) {
-    return res.status(422).json({
+    return res.status(409).json({
       err: null,
       msg: 'Username or Email already exists, please choose another.',
       data: null,
