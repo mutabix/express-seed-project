@@ -21,6 +21,10 @@ module.exports = (folder, allowedTypes) =>
     }),
     fileFilter(req, file, callback) {
       const typeArray = file.mimetype.split('/');
-      callback(null, allowedTypes.includes(typeArray[0]));
+      callback(
+        null,
+        allowedTypes.includes(typeArray[0]) ||
+          allowedTypes.includes(typeArray[1]),
+      );
     },
   });
