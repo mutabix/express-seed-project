@@ -5,17 +5,16 @@ const dbUrl = config.MONGO_URI;
 
 // CAPTURE APP TERMINATION / RESTART EVENTS
 // To be called when process is restarted or terminated
-const gracefulShutdown = () =>
-  new Promise((resolve, reject) => {
-    mongoose.connection
-      .close()
-      .then(() => {
-        resolve();
-      })
-      .catch((err) => {
-        reject(err);
-      });
-  });
+const gracefulShutdown = () => new Promise((resolve, reject) => {
+  mongoose.connection
+    .close()
+    .then(() => {
+      resolve();
+    })
+    .catch((err) => {
+      reject(err);
+    });
+});
 
 // For nodemon restarts
 process.once('SIGUSR2', () => {
@@ -39,7 +38,7 @@ process.on('SIGINT', () => {
     })
     .catch((err) => {
       console.error(err);
-      process.exit(0);
+      process.exit(1);
     });
 });
 
@@ -52,7 +51,7 @@ process.on('SIGTERM', () => {
     })
     .catch((err) => {
       console.error(err);
-      process.exit(0);
+      process.exit(1);
     });
 });
 

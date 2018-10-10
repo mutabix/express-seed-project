@@ -1,4 +1,3 @@
-require('./api/config/mongoDB');
 const express = require('express');
 const logger = require('morgan');
 const helmet = require('helmet');
@@ -7,8 +6,9 @@ const compression = require('compression');
 const bodyParser = require('body-parser');
 const path = require('path');
 
-const routes = require('./api/routes');
 const config = require('./api/config');
+require('./api/config/mongoDB');
+const routes = require('./api/routes');
 
 const app = express();
 

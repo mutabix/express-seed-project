@@ -95,18 +95,12 @@ module.exports.changeProfilePicture = async (req, res) => {
       data: null,
     });
   }
-  const imagePath = `${config.MEDIA_FOLDER}/${
+  const profilePicture = `${config.MEDIA_FOLDER}/${
     req.decodedToken.user.username
   }/profilePictures/${req.file.filename}`;
-  const url = `${req.protocol}://${req.hostname}:${req.app.get(
-    'port',
-  )}/${imagePath}`;
   const user = await User.findByIdAndUpdate(req.decodedToken.user._id, {
     $set: {
-      profilePicture: {
-        path: imagePath,
-        url,
-      },
+      profilePicture,
     },
   })
     .lean()
@@ -118,14 +112,11 @@ module.exports.changeProfilePicture = async (req, res) => {
   }
 
   if (user.profilePicture) {
-    await fs.remove(path.resolve('./', user.profilePicture.path));
+    await fs.remove(path.resolve('./', user.profilePicture));
   }
   res.status(200).json({
     err: null,
     msg: 'Profile Picture was changed successfully.',
-    data: {
-      url,
-      path: imagePath,
-    },
+    data: profilePicture,
   });
 };

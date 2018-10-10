@@ -2,6 +2,7 @@ const express = require('express');
 const errorHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
 const multer = require('../config/multer');
+const multerS3 = require('../config/multer-s3');
 const authCtrl = require('../controllers/auth.controller');
 const fileCtrl = require('../controllers/file.controller');
 const userCtrl = require('../controllers/user.controller');
@@ -48,10 +49,14 @@ const isNotAuthenticated = (req, res, next) => {
   }
 };
 
-const upload = (folder, allowedTypes) => (req, res, next) =>
-  multer(`${req.decodedToken.user.username}/${folder}`, allowedTypes).single(
-    'file',
-  )(req, res, next);
+const upload = (folder, allowedTypes) => (req, res, next) => multer(`${req.decodedToken.user.username}/${folder}`, allowedTypes).single(
+  'file',
+)(req, res, next);
+const uploadS3 = (folder, acl, allowedTypes) => (req, res, next) => multerS3(
+  `${req.decodedToken.user.username}/${folder}`,
+  acl,
+  allowedTypes,
+).single('file')(req, res, next);
 
 // -------------------------------Auth------------------------------------------
 router.post('/auth/signup', isNotAuthenticated, errorHandler(authCtrl.signup));

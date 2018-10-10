@@ -3,6 +3,7 @@ services:
   app:
     build: .
     image: omardoma/express-seed-project:v1
+    container_name: express-seed-project
     ports:
       - "3000:3000"
     volumes:

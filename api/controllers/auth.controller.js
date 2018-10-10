@@ -76,14 +76,16 @@ module.exports.signup = async (req, res) => {
       data: null,
     });
   }
-  result.value.password = await Encryption.hashPassword(result.value.password);
-  result.value.verificationToken = rand.generate(32);
-  result.value.verificationTokenExpiry = moment()
-    .add(24, 'hours')
-    .toDate();
+  Object.assign(result.value, {
+    password: await Encryption.hashPassword(result.value.password),
+    verificationToken: rand.generate(32),
+    verificationTokenExpiry: moment()
+      .add(24, 'hours')
+      .toDate(),
+  });
   const newUser = await User.create(result.value);
   await nodemailer.sendMail({
-    from: config.MAILER.from,
+    from: config.MAILER_SENDER,
     to: newUser.email,
     subject: 'Account Verification',
     html: `<p>Hello ${
@@ -186,22 +188,22 @@ module.exports.resendVerificationEmail = async (req, res) => {
       data: null,
     });
   }
-  result.value.verificationToken = rand.generate(32);
-  result.value.verificationTokenExpiry = moment()
-    .add(24, 'hours')
-    .toDate();
-  user.verificationToken = result.value.verificationToken;
-  user.verificationTokenExpiry = result.value.verificationTokenExpiry;
+  Object.assign(user, {
+    verificationToken: rand.generate(32),
+    verificationTokenExpiry: moment()
+      .add(24, 'hours')
+      .toDate(),
+  });
   await user.save();
   await nodemailer.sendMail({
-    from: config.MAILER.from,
+    from: config.MAILER_SENDER,
     to: user.email,
     subject: 'Account Verification',
     html: `<p>Hello ${
       user.firstName
     }, please click on the following link to verify your account: <a href="${
       config.FRONTEND_URI
-    }/verifyAccount/${result.value.verificationToken}">Verify</a></p>`,
+    }/verifyAccount/${user.verificationToken}">Verify</a></p>`,
   });
   res.status(200).json({
     err: null,
@@ -266,13 +268,14 @@ module.exports.forgotPassword = async (req, res) => {
       data: null,
     });
   }
-  user.resetPasswordToken = rand.generate(32);
-  user.resetPasswordTokenExpiry = moment()
-    .add(24, 'hours')
-    .toDate();
-  await user.save();
+  Object.assign(user, {
+    resetPasswordToken: rand.generate(32),
+    resetPasswordTokenExpiry: moment()
+      .add(24, 'hours')
+      .toDate(),
+  });
   await nodemailer.sendMail({
-    from: config.MAILER.from,
+    from: config.MAILER_SENDER,
     to: user.email,
     subject: 'Password Reset',
     html: `<p>Hello ${

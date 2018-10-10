@@ -1,4 +1,5 @@
 const io = require('socket.io')();
+const config = require('./index');
 
 io.sockets.on('connection', (socket) => {
   socket.on('join', (room) => {
@@ -20,5 +21,11 @@ io.sockets.on('connection', (socket) => {
     socket.leave(room);
   });
 });
+
+io.origins([
+  process.env.NODE_ENV === 'production'
+    ? `${config.FRONTEND_URI}:443`
+    : config.FRONTEND_URI,
+]);
 
 module.exports = io;

@@ -1,18 +1,18 @@
 # express-seed-project
 
-An ES6/ES7 Express.js RESTful API starter project following best practices and Airbnb javascript style guide with JWT-based authentication, Socket.io real-time updates, multer file upload and nodemailer email notifications integration.
+An ES6+ Express.js RESTful API starter project following best practices and Airbnb javascript style guide with JWT-based authentication, Socket.io real-time updates, multer and multer-s3 file upload to disk or DigitalOcean Spaces and nodemailer email notifications integration via MailGun.
 
 ## Technology:
 
-- Node.js v9
+- Node.js v10
 - Express.js v4
 - Socket.io v2
-- MongoDB v3.6
+- MongoDB v4
 - Docker
 
 ## Notes For Successfull Running
 
-- You have to plug in your own configuration (API Keys, Secret Keys and etc) in `api/config/index.js`.
+- You have to plug in a .env file of your own configuration (API Keys, Secret Keys and etc) in the root project folder.
 - Mailer's API Key and Domain are based on Mailgun, so signup for a free account and add its credentials.
 - Mailgun's free account sandbox domain have a limitation that you can only send emails to authorized recepients that you added, so add a couple of emails there for testing and for the functions to work.
 
